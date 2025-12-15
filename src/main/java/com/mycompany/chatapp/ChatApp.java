@@ -1,16 +1,26 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package com.mycompany.chatapp;
 
-/**
- *
- * @author computer.house
- */
+import javax.swing.JFrame;
+
 public class ChatApp {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+       
+        JFrame frame = new JFrame("Chat App");
+        
+       
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        
+        frame.add(new Login());
+        
+       
+        frame.pack();
+        
+       
+        frame.setLocationRelativeTo(null);
+        
+       
+        frame.setVisible(true);
     }
 }
