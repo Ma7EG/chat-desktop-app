@@ -157,7 +157,7 @@ public class Chats extends javax.swing.JFrame {
 
         jPanel5.setBackground(new java.awt.Color(34, 51, 69));
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/chatapp/images/animoji5.png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/chatapp/images/animoji-1.png"))); // NOI18N
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/chatapp/images/Frame 8.png"))); // NOI18N
 
@@ -229,7 +229,7 @@ public class Chats extends javax.swing.JFrame {
 
         jPanel7.setBackground(new java.awt.Color(34, 51, 69));
 
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/chatapp/images/animoji4.png"))); // NOI18N
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/chatapp/images/animoji-2.png"))); // NOI18N
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/chatapp/images/Frame 8.png"))); // NOI18N
 

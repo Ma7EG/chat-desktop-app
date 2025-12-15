@@ -1,0 +1,17 @@
+# NetBeans specific files
+/nbproject/private/
+/build/
+/dist/
+nbbuild/
+.nbattrs
+/nbproject/project.properties
+/nbproject/project.xml
+
+# Java specific files
+*.class
+# Jars/Zips
+*.jar
+*.zip
+
+# Log files
+*.log
