@@ -31,14 +31,13 @@ nbdist/
 .DS_Store
 Thumbs.db
 
-# --- New Additions ---
-
-# Maven (Important: Solves your conflict)
+# Maven #
 target/
 
-# IntelliJ IDEA
+# SQLite Database #
+*.db
+
+# IDE #
 .idea/
 *.iml
-
-# VS Code
 .vscode/
