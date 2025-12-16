@@ -5,8 +5,7 @@
 package com.mycompany.chatapp;
 
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Container;
@@ -25,17 +24,74 @@ public class Chats extends javax.swing.JFrame {
         // Upload button for images/videos
         private JButton btnUpload;
 
+        // Status indicator and profile button
+        private JLabel lblStatusIndicator;
+        private JButton btnProfile;
+
         /**
          * Creates new form Chats
          */
         public Chats() {
                 initComponents();
                 setupUploadButton();
+                setupStatusAndProfile();
                 // Configure responsive window settings (resizable = false to disable maximize)
                 ResponsiveHelper.configureWindow(this,
                                 ResponsiveHelper.CHAT_SIZE,
                                 ResponsiveHelper.CHAT_MIN_SIZE,
                                 false);
+        }
+
+        /**
+         * Setup status indicator and profile access button.
+         */
+        private void setupStatusAndProfile() {
+                // Create status indicator (green dot for online)
+                lblStatusIndicator = new JLabel();
+                lblStatusIndicator.setPreferredSize(new java.awt.Dimension(12, 12));
+                lblStatusIndicator.setOpaque(true);
+                lblStatusIndicator.setBackground(new Color(72, 187, 120)); // Green = Online
+                lblStatusIndicator.setBorder(javax.swing.BorderFactory.createLineBorder(Color.WHITE, 1));
+
+                // Create profile button
+                btnProfile = new JButton("Profile");
+                btnProfile.setBackground(new Color(34, 51, 69));
+                btnProfile.setForeground(new Color(108, 225, 248));
+                btnProfile.setFont(new Font("Segoe UI", Font.BOLD, 12));
+                btnProfile.setBorder(null);
+                btnProfile.setFocusPainted(false);
+                btnProfile.addActionListener(e -> openProfile());
+
+                // Add to the header panel (jPanel2)
+                if (jPanel2 != null) {
+                        jPanel2.add(lblStatusIndicator);
+                        jPanel2.add(btnProfile);
+                }
+        }
+
+        /**
+         * Open the profile screen.
+         */
+        private void openProfile() {
+                Profile profile = new Profile();
+                // TODO: Load user data from database
+                profile.setDisplayName("User Name");
+                profile.setEmail("user@example.com");
+                profile.setStatus("Online");
+                profile.setVisible(true);
+        }
+
+        /**
+         * Set the user status indicator color.
+         * 
+         * @param isOnline true for online (green), false for offline (gray)
+         */
+        public void setOnlineStatus(boolean isOnline) {
+                if (isOnline) {
+                        lblStatusIndicator.setBackground(new Color(72, 187, 120)); // Green
+                } else {
+                        lblStatusIndicator.setBackground(new Color(160, 174, 192)); // Gray
+                }
         }
 
         /**

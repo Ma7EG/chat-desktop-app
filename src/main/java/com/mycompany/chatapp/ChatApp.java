@@ -1,10 +1,15 @@
 package com.mycompany.chatapp;
 
 import javax.swing.JFrame;
+import com.mycompany.chatapp.database.DatabaseManager;
 
 public class ChatApp {
 
     public static void main(String[] args) {
+
+        // Initialize database connection (creates tables if not exist)
+        System.out.println("Starting Chat Application...");
+        DatabaseManager.getInstance();
 
         JFrame frame = new JFrame("Chat App");
 
@@ -23,5 +28,10 @@ public class ChatApp {
         frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
+
+        // Close database connection when application exits
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            DatabaseManager.getInstance().closeConnection();
+        }));
     }
 }
