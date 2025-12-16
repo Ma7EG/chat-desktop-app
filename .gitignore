@@ -30,3 +30,14 @@ nbdist/
 # Operating System #
 .DS_Store
 Thumbs.db
+
+# Maven #
+target/
+
+# SQLite Database #
+*.db
+
+# IDE #
+.idea/
+*.iml
+.vscode/
