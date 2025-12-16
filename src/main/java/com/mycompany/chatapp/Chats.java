@@ -147,28 +147,29 @@ public class Chats extends javax.swing.JFrame {
         }
 
         /**
-         * Open file chooser for image/video upload.
+         * Open file chooser for image/video upload using native Windows dialog.
          */
         private void openFileChooser() {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setDialogTitle("Select Image or Video");
+                // Use native Windows file dialog for modern look
+                java.awt.FileDialog fileDialog = new java.awt.FileDialog(this, "Select Image or Video",
+                                java.awt.FileDialog.LOAD);
 
-                // Add file filters
-                FileNameExtensionFilter imageFilter = new FileNameExtensionFilter(
-                                "Images (*.jpg, *.jpeg, *.png, *.gif)", "jpg", "jpeg", "png", "gif");
-                FileNameExtensionFilter videoFilter = new FileNameExtensionFilter(
-                                "Videos (*.mp4, *.avi, *.mov)", "mp4", "avi", "mov");
-                FileNameExtensionFilter allMediaFilter = new FileNameExtensionFilter(
-                                "All Media Files", "jpg", "jpeg", "png", "gif", "mp4", "avi", "mov");
+                // Set file filter for images and videos
+                fileDialog.setFilenameFilter((dir, name) -> {
+                        String lowerName = name.toLowerCase();
+                        return lowerName.endsWith(".jpg") || lowerName.endsWith(".jpeg") ||
+                                        lowerName.endsWith(".png") || lowerName.endsWith(".gif") ||
+                                        lowerName.endsWith(".mp4") || lowerName.endsWith(".avi") ||
+                                        lowerName.endsWith(".mov");
+                });
 
-                fileChooser.addChoosableFileFilter(allMediaFilter);
-                fileChooser.addChoosableFileFilter(imageFilter);
-                fileChooser.addChoosableFileFilter(videoFilter);
-                fileChooser.setFileFilter(allMediaFilter);
+                fileDialog.setVisible(true);
 
-                int result = fileChooser.showOpenDialog(this);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                        java.io.File selectedFile = fileChooser.getSelectedFile();
+                String directory = fileDialog.getDirectory();
+                String filename = fileDialog.getFile();
+
+                if (directory != null && filename != null) {
+                        java.io.File selectedFile = new java.io.File(directory, filename);
                         // TODO: Handle the selected file (send it in chat)
                         System.out.println("Selected file: " + selectedFile.getAbsolutePath());
                 }
