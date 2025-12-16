@@ -5,7 +5,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class User {
 
     private int id;
@@ -26,7 +25,6 @@ public class User {
         this.status = "offline";
     }
 
-    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -73,6 +71,7 @@ public class User {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
 
     public boolean save() {
         Connection conn = DatabaseManager.getInstance().getConnection();
@@ -109,7 +108,6 @@ public class User {
         }
     }
 
-  
     public boolean delete() {
         if (this.id == 0)
             return false;
@@ -127,7 +125,6 @@ public class User {
         }
     }
 
- 
     public static User find(int id) {
         Connection conn = DatabaseManager.getInstance().getConnection();
         try {
@@ -145,7 +142,6 @@ public class User {
         return null;
     }
 
-  
     public static User findByEmail(String email) {
         Connection conn = DatabaseManager.getInstance().getConnection();
         try {
@@ -163,7 +159,6 @@ public class User {
         return null;
     }
 
-
     public static List<User> findAll() {
         List<User> users = new ArrayList<>();
         Connection conn = DatabaseManager.getInstance().getConnection();
@@ -180,7 +175,6 @@ public class User {
         }
         return users;
     }
-
 
     private static User mapResultSetToUser(ResultSet rs) throws SQLException {
         User user = new User();

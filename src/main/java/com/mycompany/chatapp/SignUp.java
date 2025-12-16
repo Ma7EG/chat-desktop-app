@@ -1,9 +1,14 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
 
 package com.mycompany.chatapp;
 
-import javax.swing.JFrame;
-import javax.swing.ImageIcon;
-
+/**
+ *
+ * @author computer.house
+ */
 public class SignUp extends javax.swing.JFrame {
 
         private static final java.util.logging.Logger logger = java.util.logging.Logger
@@ -12,31 +17,7 @@ public class SignUp extends javax.swing.JFrame {
         /** Creates new form SignUp */
         public SignUp() {
                 initComponents();
-                setupResponsiveImages();
-                // Configure responsive window settings (resizable = false to disable maximize)
-                ResponsiveHelper.configureWindow(this,
-                                ResponsiveHelper.LOGIN_SIZE,
-                                ResponsiveHelper.LOGIN_MIN_SIZE,
-                                false);
-        }
-
-        /**
-         * Setup images with high-quality scaling to prevent pixelation.
-         */
-        private void setupResponsiveImages() {
-                // Scale the main signup image to proper size with high quality
-                ImageIcon signupImage = ResponsiveHelper.loadScaledImage(
-                                "/com/mycompany/chatapp/images/signup 1.png", 320, 320);
-                if (signupImage != null) {
-                        jLabel2.setIcon(signupImage);
-                }
-
-                // Scale the chat icon
-                ImageIcon chatIcon = ResponsiveHelper.loadScaledImage(
-                                "/com/mycompany/chatapp/images/wpf_chat.png", 40, 40);
-                if (chatIcon != null) {
-                        jLabel4.setIcon(chatIcon);
-                }
+                setResizable(false); // Disable maximize
         }
 
         /**
@@ -52,15 +33,15 @@ public class SignUp extends javax.swing.JFrame {
 
                 jLabel1 = new javax.swing.JLabel();
                 jPanel1 = new javax.swing.JPanel();
-                txtEmail = new javax.swing.JTextField();
-                txtPassword = new javax.swing.JTextField();
-                btnSignUp = new javax.swing.JButton();
+                jTextField1 = new javax.swing.JTextField();
+                jTextField2 = new javax.swing.JTextField();
+                jButton1 = new javax.swing.JButton();
                 jLabel3 = new javax.swing.JLabel();
                 jLabel4 = new javax.swing.JLabel();
-                txtConfirmPass = new javax.swing.JTextField();
+                jTextField3 = new javax.swing.JTextField();
                 jLabel2 = new javax.swing.JLabel();
                 jLabel5 = new javax.swing.JLabel();
-                btnGoToLogin = new javax.swing.JButton();
+                jButton2 = new javax.swing.JButton();
 
                 jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
                 jLabel1.setForeground(new java.awt.Color(108, 225, 248));
@@ -70,39 +51,27 @@ public class SignUp extends javax.swing.JFrame {
 
                 jPanel1.setBackground(new java.awt.Color(32, 40, 58));
 
-                txtEmail.setBackground(new java.awt.Color(32, 40, 58));
-                txtEmail.setForeground(new java.awt.Color(153, 153, 153));
-                txtEmail.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Email",
+                jTextField1.setBackground(new java.awt.Color(32, 40, 58));
+                jTextField1.setForeground(new java.awt.Color(153, 153, 153));
+                jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Email",
                                 javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
                                 javax.swing.border.TitledBorder.DEFAULT_POSITION,
-                                new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(255, 255, 255))); // NOI18N
-                txtEmail.addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                txtEmailActionPerformed(evt);
-                        }
-                });
+                                new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 255, 255))); // NOI18N
+                jTextField1.addActionListener(this::jTextField1ActionPerformed);
 
-                txtPassword.setBackground(new java.awt.Color(32, 40, 58));
-                txtPassword.setForeground(new java.awt.Color(153, 153, 153));
-                txtPassword.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Password",
+                jTextField2.setBackground(new java.awt.Color(32, 40, 58));
+                jTextField2.setForeground(new java.awt.Color(153, 153, 153));
+                jTextField2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Password",
                                 javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
                                 javax.swing.border.TitledBorder.DEFAULT_POSITION,
-                                new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(255, 255, 255))); // NOI18N
-                txtPassword.addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                txtPasswordActionPerformed(evt);
-                        }
-                });
+                                new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 255, 255))); // NOI18N
+                jTextField2.addActionListener(this::jTextField2ActionPerformed);
 
-                btnSignUp.setBackground(new java.awt.Color(65, 143, 174));
-                btnSignUp.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-                btnSignUp.setForeground(new java.awt.Color(255, 255, 255));
-                btnSignUp.setText("Sign up");
-                btnSignUp.addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                btnSignUpActionPerformed(evt);
-                        }
-                });
+                jButton1.setBackground(new java.awt.Color(65, 143, 174));
+                jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+                jButton1.setForeground(new java.awt.Color(255, 255, 255));
+                jButton1.setText("Sign up");
+                jButton1.addActionListener(this::jButton1ActionPerformed);
 
                 jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
                 jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -112,17 +81,13 @@ public class SignUp extends javax.swing.JFrame {
                                 new javax.swing.ImageIcon(
                                                 getClass().getResource("/com/mycompany/chatapp/images/wpf_chat.png"))); // NOI18N
 
-                txtConfirmPass.setBackground(new java.awt.Color(32, 40, 58));
-                txtConfirmPass.setForeground(new java.awt.Color(153, 153, 153));
-                txtConfirmPass.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Confirm Password",
+                jTextField3.setBackground(new java.awt.Color(32, 40, 58));
+                jTextField3.setForeground(new java.awt.Color(153, 153, 153));
+                jTextField3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Confirm Password",
                                 javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
                                 javax.swing.border.TitledBorder.DEFAULT_POSITION,
-                                new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(255, 255, 255))); // NOI18N
-                txtConfirmPass.addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                txtConfirmPassActionPerformed(evt);
-                        }
-                });
+                                new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 255, 255))); // NOI18N
+                jTextField3.addActionListener(this::jTextField3ActionPerformed);
 
                 jLabel2.setIcon(
                                 new javax.swing.ImageIcon(
@@ -132,16 +97,12 @@ public class SignUp extends javax.swing.JFrame {
                 jLabel5.setForeground(new java.awt.Color(108, 225, 248));
                 jLabel5.setText("Connect Anytime , Anywhere ");
 
-                btnGoToLogin.setBackground(new java.awt.Color(34, 51, 69));
-                btnGoToLogin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-                btnGoToLogin.setForeground(new java.awt.Color(0, 204, 204));
-                btnGoToLogin.setText("Have an account !? Sign in");
-                btnGoToLogin.setBorder(null);
-                btnGoToLogin.addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                btnGoToLoginActionPerformed(evt);
-                        }
-                });
+                jButton2.setBackground(new java.awt.Color(34, 51, 69));
+                jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+                jButton2.setForeground(new java.awt.Color(0, 204, 204));
+                jButton2.setText("Have an account !? Sign in");
+                jButton2.setBorder(null);
+                jButton2.addActionListener(this::jButton2ActionPerformed);
 
                 javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
                 jPanel1.setLayout(jPanel1Layout);
@@ -170,7 +131,7 @@ public class SignUp extends javax.swing.JFrame {
                                                                                 .addGroup(jPanel1Layout
                                                                                                 .createParallelGroup(
                                                                                                                 javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                                .addComponent(btnGoToLogin,
+                                                                                                .addComponent(jButton2,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                 289,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -178,13 +139,13 @@ public class SignUp extends javax.swing.JFrame {
                                                                                                                 .createParallelGroup(
                                                                                                                                 javax.swing.GroupLayout.Alignment.LEADING,
                                                                                                                                 false)
-                                                                                                                .addComponent(txtEmail)
-                                                                                                                .addComponent(txtPassword)
-                                                                                                                .addComponent(btnSignUp,
+                                                                                                                .addComponent(jTextField1)
+                                                                                                                .addComponent(jTextField2)
+                                                                                                                .addComponent(jButton1,
                                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                                 289,
                                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                                .addComponent(txtConfirmPass,
+                                                                                                                .addComponent(jTextField3,
                                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                                 289,
                                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -217,28 +178,28 @@ public class SignUp extends javax.swing.JFrame {
                                                                                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                                 .addComponent(jLabel3)
                                                                                                 .addGap(18, 18, 18)
-                                                                                                .addComponent(txtEmail,
+                                                                                                .addComponent(jTextField1,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                 .addGap(9, 9, 9)
-                                                                                                .addComponent(txtPassword,
+                                                                                                .addComponent(jTextField2,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                 .addGap(9, 9, 9)
-                                                                                                .addComponent(txtConfirmPass,
+                                                                                                .addComponent(jTextField3,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                 .addGap(9, 9, 9)
-                                                                                                .addComponent(btnSignUp,
+                                                                                                .addComponent(jButton1,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                 33,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                 .addPreferredGap(
                                                                                                                 javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                                                .addComponent(btnGoToLogin,
+                                                                                                .addComponent(jButton2,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                 33,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -258,33 +219,35 @@ public class SignUp extends javax.swing.JFrame {
                 pack();
         }// </editor-fold>//GEN-END:initComponents
 
-        private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtEmailActionPerformed
+        private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField1ActionPerformed
                 // TODO add your handling code here:
-        }// GEN-LAST:event_txtEmailActionPerformed
+        }// GEN-LAST:event_jTextField1ActionPerformed
 
-        private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtPasswordActionPerformed
+        private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField2ActionPerformed
                 // TODO add your handling code here:
-        }// GEN-LAST:event_txtPasswordActionPerformed
+        }// GEN-LAST:event_jTextField2ActionPerformed
 
-        private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSignUpActionPerformed
-                // TODO add your handling code here:
-        }// GEN-LAST:event_btnSignUpActionPerformed
-
-        private void txtConfirmPassActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtConfirmPassActionPerformed
-                // TODO add your handling code here:
-        }// GEN-LAST:event_txtConfirmPassActionPerformed
-
-        private void btnGoToLoginActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnGoToLoginActionPerformed
-
+        private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
+                // Navigate to Chats page after sign up
                 this.dispose();
+                new Chats().setVisible(true);
+        }// GEN-LAST:event_jButton1ActionPerformed
 
-                JFrame frame = new JFrame("Chat App");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField3ActionPerformed
+                // TODO add your handling code here:
+        }// GEN-LAST:event_jTextField3ActionPerformed
+
+        private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton2ActionPerformed
+                // Navigate to Login page
+                this.dispose();
+                // Create a frame for Login panel
+                javax.swing.JFrame frame = new javax.swing.JFrame("ChatApp - Login");
+                frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
                 frame.add(new Login());
                 frame.pack();
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
-        }// GEN-LAST:event_btnGoToLoginActionPerformed
+        }// GEN-LAST:event_jButton2ActionPerformed
 
         /**
          * @param args the command line arguments
@@ -317,17 +280,17 @@ public class SignUp extends javax.swing.JFrame {
         }
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
-        private javax.swing.JButton btnGoToLogin;
-        private javax.swing.JButton btnSignUp;
+        private javax.swing.JButton jButton1;
+        private javax.swing.JButton jButton2;
         private javax.swing.JLabel jLabel1;
         private javax.swing.JLabel jLabel2;
         private javax.swing.JLabel jLabel3;
         private javax.swing.JLabel jLabel4;
         private javax.swing.JLabel jLabel5;
         private javax.swing.JPanel jPanel1;
-        private javax.swing.JTextField txtConfirmPass;
-        private javax.swing.JTextField txtEmail;
-        private javax.swing.JTextField txtPassword;
+        private javax.swing.JTextField jTextField1;
+        private javax.swing.JTextField jTextField2;
+        private javax.swing.JTextField jTextField3;
         // End of variables declaration//GEN-END:variables
 
 }
