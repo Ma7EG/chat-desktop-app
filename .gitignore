@@ -30,3 +30,15 @@ nbdist/
 # Operating System #
 .DS_Store
 Thumbs.db
+
+# --- New Additions ---
+
+# Maven (Important: Solves your conflict)
+target/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# VS Code
+.vscode/
