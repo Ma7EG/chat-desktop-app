@@ -23,7 +23,7 @@ public class Message {
         this.isRead = false;
     }
 
-    public Message(int senderId, int receiverId, String content) {
+    public Message(int senderId, int receiverId, String content, String messageType, String mediaPath) {
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.content = content;
