@@ -1,8 +1,10 @@
 package com.mycompany.chatapp.pattern.observer;
 
+import com.mycompany.chatapp.model.Message;
+
 /**
  * Observer Pattern - IObserver
  */
 public interface IObserver {
-    // Implement Observer pattern here
+ void updateMessages(Message message);
 }
