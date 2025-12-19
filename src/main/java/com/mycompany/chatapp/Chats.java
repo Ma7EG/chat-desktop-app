@@ -588,26 +588,50 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                         vertical.setValue(vertical.getMaximum());
                 });
         }
+        
+    class RoundedPanel extends javax.swing.JPanel {
+    private int radius;
+    private java.awt.Color backgroundColor;
 
+    public RoundedPanel(int radius, java.awt.Color bgColor) {
+        this.radius = radius;
+        this.backgroundColor = bgColor;
+        setOpaque(false); // مهم جداً لجعل الزوايا شفافة
+    }
+
+    @Override
+    protected void paintComponent(java.awt.Graphics g) {
+        super.paintComponent(g);
+        java.awt.Graphics2D graphics = (java.awt.Graphics2D) g;
+        graphics.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.setColor(backgroundColor);
+        graphics.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, radius, radius);
+    }
+}
+        
+//-------------------------------------------------------------------------------------------------------------------------------------------//
+        
         private javax.swing.JPanel createMessageBubble(Message message) {
                 boolean isMine = message.getSenderId() == SessionManager.getInstance().getCurrentUserId();
+                
+                // حدد اللون أولاً
+java.awt.Color bubbleColor = isMine ? new java.awt.Color(34, 52, 70) : new java.awt.Color(71, 86, 101);
+RoundedPanel bubble = new RoundedPanel(20, bubbleColor);
 
                 javax.swing.JPanel bubbleContainer = new javax.swing.JPanel();
                 bubbleContainer.setLayout(new java.awt.BorderLayout());
                 bubbleContainer.setOpaque(false);
-                bubbleContainer.setMaximumSize(new java.awt.Dimension(Short.MAX_VALUE, 400)); // Increased height for
-
-                javax.swing.JPanel bubble = new javax.swing.JPanel();
+bubbleContainer.setMaximumSize(new java.awt.Dimension(Short.MAX_VALUE, 500));
+bubbleContainer.add(bubble);
                 bubble.setLayout(new javax.swing.BoxLayout(bubble, javax.swing.BoxLayout.Y_AXIS));
                 bubble.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
                 if (isMine) {
-                        bubble.setBackground(new java.awt.Color(65, 143, 174));
-                        bubbleContainer.add(bubble, java.awt.BorderLayout.EAST);
+bubbleContainer.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
                 } else {
-                        bubble.setBackground(new java.awt.Color(44, 55, 75));
-                        bubbleContainer.add(bubble, java.awt.BorderLayout.WEST);
+bubbleContainer.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
                 }
+bubbleContainer.setMaximumSize(new java.awt.Dimension(Short.MAX_VALUE, 500));
                 if ("IMAGE".equalsIgnoreCase(message.getMessageType())) {
                         String path = message.getMediaPath();
                         if (path != null && new java.io.File(path).exists()) {
@@ -1477,7 +1501,7 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                                                                 Short.MAX_VALUE));
 
                 pack();
-        }// </editor-fold>//GEN-END:initComponents
+        }// </editor-fold>                        
 
         private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField1ActionPerformed
         }// GEN-LAST:event_jTextField1ActionPerformed
