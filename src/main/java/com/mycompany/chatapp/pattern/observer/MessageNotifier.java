@@ -4,9 +4,6 @@ import com.mycompany.chatapp.model.Message;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Observer Pattern - MessageNotifier
- */
 public class MessageNotifier implements ISubject  {
     private List<IObserver>observers=new ArrayList<>();
 

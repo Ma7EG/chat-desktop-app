@@ -5,7 +5,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Message {
 
     private int id;
@@ -16,8 +15,6 @@ public class Message {
     private String mediaPath;
     private Timestamp sentAt;
     private boolean isRead;
-
-    // Constructors
     public Message() {
         this.messageType = "text";
         this.isRead = false;
@@ -27,11 +24,10 @@ public class Message {
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.content = content;
-        this.messageType = "text";
+        this.messageType = messageType != null ? messageType : "text";
+        this.mediaPath = mediaPath;
         this.isRead = false;
     }
-
-    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -205,7 +201,6 @@ public class Message {
             System.err.println("Error marking messages as read: " + e.getMessage());
         }
     }
-
 
     private static Message mapResultSetToMessage(ResultSet rs) throws SQLException {
         Message message = new Message();

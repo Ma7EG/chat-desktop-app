@@ -5,7 +5,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Contact {
 
     private int id;
@@ -13,8 +12,7 @@ public class Contact {
     private String firstName;
     private String lastName;
     private String phone;
-
-    // Constructors
+    private String imagePath;
     public Contact() {
     }
 
@@ -24,8 +22,6 @@ public class Contact {
         this.lastName = lastName;
         this.phone = phone;
     }
-
-    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -66,7 +62,14 @@ public class Contact {
         this.phone = phone;
     }
 
-   
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     public String getFullName() {
         return firstName + " " + (lastName != null ? lastName : "");
     }
@@ -76,12 +79,13 @@ public class Contact {
 
         try {
             if (this.id == 0) {
-                String sql = "INSERT INTO contacts (user_id, first_name, last_name, phone) VALUES (?, ?, ?, ?)";
+                String sql = "INSERT INTO contacts (user_id, first_name, last_name, phone, image_path) VALUES (?, ?, ?, ?, ?)";
                 PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, userId);
                 ps.setString(2, firstName);
                 ps.setString(3, lastName);
                 ps.setString(4, phone);
+                ps.setString(5, imagePath);
                 ps.executeUpdate();
 
                 ResultSet rs = ps.getGeneratedKeys();
@@ -90,12 +94,13 @@ public class Contact {
                 }
                 return true;
             } else {
-                String sql = "UPDATE contacts SET first_name=?, last_name=?, phone=? WHERE id=?";
+                String sql = "UPDATE contacts SET first_name=?, last_name=?, phone=?, image_path=? WHERE id=?";
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ps.setString(1, firstName);
                 ps.setString(2, lastName);
                 ps.setString(3, phone);
-                ps.setInt(4, id);
+                ps.setString(4, imagePath);
+                ps.setInt(5, id);
                 ps.executeUpdate();
                 return true;
             }
@@ -105,7 +110,6 @@ public class Contact {
         }
     }
 
-  
     public boolean delete() {
         if (this.id == 0)
             return false;
@@ -122,7 +126,6 @@ public class Contact {
             return false;
         }
     }
-
 
     public static Contact find(int id) {
         Connection conn = DatabaseManager.getInstance().getConnection();
@@ -141,7 +144,6 @@ public class Contact {
         return null;
     }
 
-    
     public static List<Contact> findByUserId(int userId) {
         List<Contact> contacts = new ArrayList<>();
         Connection conn = DatabaseManager.getInstance().getConnection();
@@ -167,6 +169,7 @@ public class Contact {
         contact.setFirstName(rs.getString("first_name"));
         contact.setLastName(rs.getString("last_name"));
         contact.setPhone(rs.getString("phone"));
+        contact.setImagePath(rs.getString("image_path"));
         return contact;
     }
 }

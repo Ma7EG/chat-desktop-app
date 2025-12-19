@@ -12,13 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-/**
- * Utility class for responsive GUI behavior.
- * Provides image scaling and window management utilities.
- */
 public class ResponsiveHelper {
-    
-    // Chat app dimensions
     public static final Dimension LOGIN_SIZE = new Dimension(800, 600);
     public static final Dimension LOGIN_MIN_SIZE = new Dimension(600, 450);
     
@@ -31,15 +25,7 @@ public class ResponsiveHelper {
     public static final Dimension ADD_CONTACT_SIZE = new Dimension(700, 500);
     public static final Dimension ADD_CONTACT_MIN_SIZE = new Dimension(500, 400);
     
-    /**
-     * Scale an ImageIcon to the specified dimensions with high quality.
-     * Uses bicubic interpolation for smooth scaling.
-     * 
-     * @param icon The original ImageIcon
-     * @param width Target width
-     * @param height Target height
-     * @return Scaled ImageIcon
-     */
+    
     public static ImageIcon scaleImage(ImageIcon icon, int width, int height) {
         if (icon == null || icon.getImage() == null) {
             return icon;
@@ -59,14 +45,7 @@ public class ResponsiveHelper {
         return new ImageIcon(scaledImage);
     }
     
-    /**
-     * Load and scale an image from resources.
-     * 
-     * @param resourcePath Path to the resource (e.g., "/com/mycompany/chatapp/images/login 1.png")
-     * @param width Target width
-     * @param height Target height
-     * @return Scaled ImageIcon
-     */
+    
     public static ImageIcon loadScaledImage(String resourcePath, int width, int height) {
         try {
             ImageIcon originalIcon = new ImageIcon(ResponsiveHelper.class.getResource(resourcePath));
@@ -77,14 +56,7 @@ public class ResponsiveHelper {
         }
     }
     
-    /**
-     * Configure a JFrame with responsive settings.
-     * 
-     * @param frame The JFrame to configure
-     * @param preferredSize Preferred window size
-     * @param minimumSize Minimum window size
-     * @param resizable Whether the window is resizable
-     */
+    
     public static void configureWindow(JFrame frame, Dimension preferredSize, Dimension minimumSize, boolean resizable) {
         frame.setPreferredSize(preferredSize);
         frame.setMinimumSize(minimumSize);
@@ -92,15 +64,7 @@ public class ResponsiveHelper {
         frame.setLocationRelativeTo(null);
     }
     
-    /**
-     * Add a resize listener that automatically scales an image in a JLabel.
-     * 
-     * @param component The component to listen for resize events
-     * @param label The JLabel containing the image
-     * @param originalIcon The original full-size icon
-     * @param widthRatio Ratio of component width for image width (0.0 to 1.0)
-     * @param heightRatio Ratio of component height for image height (0.0 to 1.0)
-     */
+    
     public static void addImageResizeListener(Component component, JLabel label, 
             ImageIcon originalIcon, double widthRatio, double heightRatio) {
         
@@ -118,11 +82,7 @@ public class ResponsiveHelper {
         });
     }
     
-    /**
-     * Center a frame on the screen.
-     * 
-     * @param frame The frame to center
-     */
+    
     public static void centerOnScreen(JFrame frame) {
         frame.setLocationRelativeTo(null);
     }

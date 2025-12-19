@@ -42,4 +42,10 @@ public class RealUserService implements IUserService {
         }
         return false;
     }
+
+    @Override
+    public User findByPhone(String phone) {
+        System.out.println("RealUserService: Fetching user from database, Phone: " + phone);
+        return User.findByPhone(phone);
+    }
 }

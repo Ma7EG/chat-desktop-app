@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class UserServiceProxy implements IUserService {
 
     private RealUserService realService;
@@ -13,14 +12,15 @@ public class UserServiceProxy implements IUserService {
     private Map<Integer, User> cacheById;
 
     private Map<String, User> cacheByEmail;
+    private Map<String, User> cacheByPhone;
 
     public UserServiceProxy() {
         this.cacheById = new HashMap<>();
         this.cacheByEmail = new HashMap<>();
+        this.cacheByPhone = new HashMap<>();
         System.out.println("UserServiceProxy: Created - Caching enabled");
     }
 
-   
     private RealUserService getRealService() {
         if (realService == null) {
             System.out.println("UserServiceProxy: Creating RealUserService (lazy loading)");
@@ -42,6 +42,8 @@ public class UserServiceProxy implements IUserService {
         if (user != null) {
             cacheById.put(id, user);
             cacheByEmail.put(user.getEmail(), user);
+            if (user.getPhone() != null)
+                cacheByPhone.put(user.getPhone(), user);
         }
 
         return user;
@@ -49,7 +51,6 @@ public class UserServiceProxy implements IUserService {
 
     @Override
     public User findByEmail(String email) {
-        // Check cache first
         if (cacheByEmail.containsKey(email)) {
             System.out.println("UserServiceProxy: Cache HIT for Email: " + email);
             return cacheByEmail.get(email);
@@ -61,6 +62,29 @@ public class UserServiceProxy implements IUserService {
         if (user != null) {
             cacheById.put(user.getId(), user);
             cacheByEmail.put(email, user);
+            if (user.getPhone() != null)
+                cacheByPhone.put(user.getPhone(), user);
+        }
+
+        return user;
+    }
+
+    @Override
+    public User findByPhone(String phone) {
+        if (phone == null)
+            return null;
+        if (cacheByPhone.containsKey(phone)) {
+            System.out.println("UserServiceProxy: Cache HIT for Phone: " + phone);
+            return cacheByPhone.get(phone);
+        }
+
+        System.out.println("UserServiceProxy: Cache MISS for Phone: " + phone);
+        User user = getRealService().findByPhone(phone);
+
+        if (user != null) {
+            cacheById.put(user.getId(), user);
+            cacheByEmail.put(user.getEmail(), user);
+            cacheByPhone.put(phone, user);
         }
 
         return user;
@@ -74,6 +98,8 @@ public class UserServiceProxy implements IUserService {
         for (User user : users) {
             cacheById.put(user.getId(), user);
             cacheByEmail.put(user.getEmail(), user);
+            if (user.getPhone() != null)
+                cacheByPhone.put(user.getPhone(), user);
         }
 
         return users;
@@ -86,6 +112,8 @@ public class UserServiceProxy implements IUserService {
         if (result && user.getId() > 0) {
             cacheById.put(user.getId(), user);
             cacheByEmail.put(user.getEmail(), user);
+            if (user.getPhone() != null)
+                cacheByPhone.put(user.getPhone(), user);
             System.out.println("UserServiceProxy: Cache updated after save");
         }
 
@@ -102,6 +130,8 @@ public class UserServiceProxy implements IUserService {
             cacheById.remove(id);
             if (user != null) {
                 cacheByEmail.remove(user.getEmail());
+                if (user.getPhone() != null)
+                    cacheByPhone.remove(user.getPhone());
             }
             System.out.println("UserServiceProxy: Cache cleared after delete");
         }
@@ -109,16 +139,16 @@ public class UserServiceProxy implements IUserService {
         return result;
     }
 
-    
     public void clearCache() {
         cacheById.clear();
         cacheByEmail.clear();
+        cacheByPhone.clear();
         System.out.println("UserServiceProxy: Cache cleared");
     }
 
-  
     public String getCacheStats() {
         return "Cache Stats: " + cacheById.size() + " users cached by ID, " +
-                cacheByEmail.size() + " users cached by email";
+                cacheByEmail.size() + " users cached by email, " +
+                cacheByPhone.size() + " users cached by phone";
     }
 }

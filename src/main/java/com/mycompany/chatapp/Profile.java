@@ -3,15 +3,10 @@ package com.mycompany.chatapp;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Profile screen for viewing and editing user information.
- */
 public class Profile extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger
             .getLogger(Profile.class.getName());
-
-    // UI Components
     private JLabel lblAvatar;
     private JTextField txtDisplayName;
     private JTextField txtEmail;
@@ -31,14 +26,10 @@ public class Profile extends javax.swing.JFrame {
     private void initComponents() {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Profile");
-
-        // Main panel
         JPanel mainPanel = new JPanel();
         mainPanel.setBackground(new Color(32, 40, 58));
         mainPanel.setLayout(new BorderLayout(20, 20));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
-
-        // Top panel - Avatar
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         topPanel.setBackground(new Color(32, 40, 58));
 
@@ -63,8 +54,6 @@ public class Profile extends javax.swing.JFrame {
         avatarPanel.add(lblAvatar, BorderLayout.CENTER);
         avatarPanel.add(btnChangeAvatar, BorderLayout.SOUTH);
         topPanel.add(avatarPanel);
-
-        // Center panel - Form fields
         JPanel formPanel = new JPanel(new GridLayout(3, 2, 10, 15));
         formPanel.setBackground(new Color(32, 40, 58));
 
@@ -106,8 +95,6 @@ public class Profile extends javax.swing.JFrame {
         formPanel.add(txtEmail);
         formPanel.add(lblStatusLabel);
         formPanel.add(cmbStatus);
-
-        // Bottom panel - Buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
         buttonPanel.setBackground(new Color(32, 40, 58));
 
@@ -131,8 +118,6 @@ public class Profile extends javax.swing.JFrame {
 
         buttonPanel.add(btnBack);
         buttonPanel.add(btnSave);
-
-        // Add to main panel
         mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(formPanel, BorderLayout.CENTER);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -152,7 +137,6 @@ public class Profile extends javax.swing.JFrame {
         fileDialog.setVisible(true);
 
         if (fileDialog.getFile() != null) {
-            // TODO: Load and display selected image
             System.out.println("Selected: " + fileDialog.getDirectory() + fileDialog.getFile());
         }
     }
@@ -160,22 +144,37 @@ public class Profile extends javax.swing.JFrame {
     private void saveChanges() {
         String displayName = txtDisplayName.getText();
         String status = (String) cmbStatus.getSelectedItem();
+        com.mycompany.chatapp.model.User currentUser = com.mycompany.chatapp.session.SessionManager.getInstance()
+                .getCurrentUser();
 
-        // TODO: Save to database using Proxy
-        System.out.println("Saving: " + displayName + ", Status: " + status);
+        if (currentUser == null) {
+            JOptionPane.showMessageDialog(this,
+                    "No user logged in",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        currentUser.setDisplayName(displayName);
+        currentUser.setStatus(status.toLowerCase());
+        com.mycompany.chatapp.proxy.UserServiceProxy userService = new com.mycompany.chatapp.proxy.UserServiceProxy();
 
-        JOptionPane.showMessageDialog(this,
-                "Profile updated successfully!",
-                "Success",
-                JOptionPane.INFORMATION_MESSAGE);
+        if (userService.save(currentUser)) {
+            JOptionPane.showMessageDialog(this,
+                    "Profile updated successfully!",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Failed to update profile",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void goBack() {
         this.dispose();
         new Chats().setVisible(true);
     }
-
-    // Setters for loading user data
     public void setDisplayName(String name) {
         txtDisplayName.setText(name);
     }

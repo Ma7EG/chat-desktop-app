@@ -19,5 +19,3 @@ public class DeleteMessageCommand implements ICommand{
         message.save();
     }
 }
-
-

@@ -1,8 +1,12 @@
 package com.mycompany.chatapp.pattern.state;
 
-/**
- * State Pattern - IUserState
- */
+import com.mycompany.chatapp.model.Message;
+import com.mycompany.chatapp.model.User;
+
 public interface IUserState {
-    //Implement State pattern here
+    
+    void handleIncomingMessage(User user, Message message);
+
+    
+    String getStatusText();
 }

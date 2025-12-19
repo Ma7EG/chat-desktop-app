@@ -2,10 +2,6 @@ package com.mycompany.chatapp.pattern.factory;
 
 import com.mycompany.chatapp.model.Message;
 
-/**
- * Factory Pattern - MessageFactory
-
- */
 public class MessageFactory {
 
     public static Message createMessage( String type, int senderId,
@@ -30,6 +26,3 @@ public class MessageFactory {
         }
     }
 }
-
-
-

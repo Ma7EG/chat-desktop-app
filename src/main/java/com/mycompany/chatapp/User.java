@@ -34,8 +34,6 @@ public class User {
     public String toString() {
         return "User{" + "username=" + username + ", email=" + email + '}';
     }
-
-  //user builder class
     
     public static class UserBuilder {
        

@@ -1,12 +1,8 @@
-
 package com.mycompany.chatapp.pattern.observer;
 
 import com.mycompany.chatapp.model.Message;
 import com.mycompany.chatapp.model.User;
 
-/**
- * Observer Pattern - ChatWindow
- */
 public class ChatWindow implements IObserver{
     
     private String windowName;
