@@ -8,9 +8,7 @@ import java.util.Map;
 public class UserServiceProxy implements IUserService {
 
     private RealUserService realService;
-
     private Map<Integer, User> cacheById;
-
     private Map<String, User> cacheByEmail;
     private Map<String, User> cacheByPhone;
 
@@ -20,7 +18,7 @@ public class UserServiceProxy implements IUserService {
         this.cacheByPhone = new HashMap<>();
         System.out.println("UserServiceProxy: Created - Caching enabled");
     }
-
+    //LAZY LOADING
     private RealUserService getRealService() {
         if (realService == null) {
             System.out.println("UserServiceProxy: Creating RealUserService (lazy loading)");
@@ -30,15 +28,17 @@ public class UserServiceProxy implements IUserService {
     }
 
     @Override
+    //cache hit search first in cashe if not found then search in database
     public User findById(int id) {
         if (cacheById.containsKey(id)) {
             System.out.println("UserServiceProxy: Cache HIT for ID: " + id);
             return cacheById.get(id);
         }
-
+        //cashe miss search in database
         System.out.println("UserServiceProxy: Cache MISS for ID: " + id);
         User user = getRealService().findById(id);
-
+        
+        //if user is not null then add to cache
         if (user != null) {
             cacheById.put(id, user);
             cacheByEmail.put(user.getEmail(), user);

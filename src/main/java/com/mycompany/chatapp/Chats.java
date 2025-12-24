@@ -23,7 +23,6 @@ public class Chats extends javax.swing.JFrame implements IObserver {
         private List<Contact> contacts;
         private ChatController chatController;
 
-        
         public Chats() {
                 chatController = ChatController.getInstance();
                 initComponents();
@@ -53,7 +52,7 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                                 if (selectedContact.getId() != 0)
                                         displayMessages(selectedContact.getId());
                                 else {
-                                        User u = User.findByPhone(selectedContact.getPhone());
+                                        User u = chatController.findUserByPhone(selectedContact.getPhone());
                                         if (u != null)
                                                 displayMessages(-u.getId());
                                 }
@@ -64,7 +63,6 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                 resizeButtonIcon(jButton2, 20, 20);
         }
 
-        
         private void resizeButtonIcon(javax.swing.JButton button, int width, int height) {
                 javax.swing.Icon icon = button.getIcon();
                 if (icon instanceof javax.swing.ImageIcon) {
@@ -74,7 +72,6 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                 }
         }
 
-        
         private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton2ActionPerformed
                 if (selectedContact == null) {
                         javax.swing.JOptionPane.showMessageDialog(this, "Select a contact first");
@@ -108,7 +105,7 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                                 if (selectedContact.getId() != 0) {
                                         msgs = chatController.getConversationWithContact(selectedContact.getId());
                                 } else {
-                                        User u = User.findByPhone(selectedContact.getPhone());
+                                        User u = chatController.findUserByPhone(selectedContact.getPhone());
                                         if (u != null) {
                                                 msgs = Message.getConversation(
                                                                 SessionManager.getInstance().getCurrentUserId(),
@@ -126,7 +123,7 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                                 if (selectedContact.getId() != 0)
                                         displayMessages(selectedContact.getId());
                                 else {
-                                        User u = User.findByPhone(selectedContact.getPhone());
+                                        User u = chatController.findUserByPhone(selectedContact.getPhone());
                                         if (u != null)
                                                 displayMessages(-u.getId());
                                 }
@@ -134,17 +131,16 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                 }
         }// GEN-LAST:event_jButton2ActionPerformed
 
-        
         private void loadContacts() {
                 contacts = chatController.getCurrentUserContacts();
                 updateContactLabels();
         }
+
         private javax.swing.JPanel contactsListPanel;
         private javax.swing.JScrollPane contactsScrollPane;
         private javax.swing.JPanel messagesListPanel;
         private javax.swing.JScrollPane messagesScrollPane;
 
-        
         private void rebuildContactsSidebar() {
                 if (jPanel4 == null)
                         return;
@@ -176,6 +172,32 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                 gbc.gridy = 0;
                 gbc.gridwidth = 2;
                 headerPanel.add(btnYourContact, gbc);
+
+                javax.swing.JButton btnLogout = new javax.swing.JButton("Logout ↩");
+                btnLogout.setBackground(new java.awt.Color(45, 55, 75));
+                btnLogout.setForeground(new java.awt.Color(255, 100, 100));
+                btnLogout.setFont(buttonFont);
+                btnLogout.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 10, 5));
+                btnLogout.setFocusPainted(false);
+                btnLogout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+                btnLogout.addActionListener(e -> {
+                        int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+                                        "Are you sure you want to logout?",
+                                        "Logout", javax.swing.JOptionPane.YES_NO_OPTION);
+                        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+                                SessionManager.getInstance().logout();
+                                this.dispose();
+                                javax.swing.JFrame frame = new javax.swing.JFrame("ChatApp - Login");
+                                frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+                                frame.setResizable(false);
+                                frame.add(new Login());
+                                frame.pack();
+                                frame.setLocationRelativeTo(null);
+                                frame.setVisible(true);
+                        }
+                });
+                gbc.gridy = 1;
+                headerPanel.add(btnLogout, gbc);
                 contactsListPanel = new javax.swing.JPanel();
                 contactsListPanel.setLayout(new javax.swing.BoxLayout(contactsListPanel, javax.swing.BoxLayout.Y_AXIS));
                 contactsListPanel.setBackground(new java.awt.Color(37, 51, 66));
@@ -323,7 +345,6 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                 });
         }
 
-        
         private void updateContactLabels() {
                 if (contactsListPanel == null)
                         return;
@@ -355,7 +376,7 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                                 boolean isContact = false;
                                 if (contacts != null) {
                                         for (Contact c : contacts) {
-                                                User contactUser = User.findByPhone(c.getPhone());
+                                                User contactUser = chatController.findUserByPhone(c.getPhone());
                                                 if (contactUser != null && contactUser.getId() == chatterId) {
                                                         isContact = true;
                                                         break;
@@ -364,7 +385,7 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                                 }
 
                                 if (!isContact && chatterId != currentUser.getId()) {
-                                        User u = User.find(chatterId);
+                                        User u = chatController.findUserById(chatterId);
                                         if (u != null) {
                                                 Contact unsaved = new Contact();
                                                 unsaved.setFirstName("Unsaved User");
@@ -393,12 +414,12 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                         return contact.getImagePath();
                 }
                 if (userId > 0) {
-                        User u = User.find(userId);
+                        User u = chatController.findUserById(userId);
                         if (u != null && u.getImagePath() != null && !u.getImagePath().isEmpty()) {
                                 return u.getImagePath();
                         }
                 } else if (contact != null && contact.getPhone() != null) {
-                        User u = User.findByPhone(contact.getPhone());
+                        User u = chatController.findUserByPhone(contact.getPhone());
                         if (u != null && u.getImagePath() != null && !u.getImagePath().isEmpty()) {
                                 return u.getImagePath();
                         }
@@ -420,7 +441,7 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                 row.add(avatar);
                 javax.swing.JLabel statusDot = new javax.swing.JLabel("●");
                 statusDot.setBounds(58, 10, 10, 20);
-                User chatter = User.find(userId);
+                User chatter = chatController.findUserById(userId);
                 if (chatter != null && chatter.isOnline()) {
                         statusDot.setForeground(new java.awt.Color(0, 255, 127)); // Green
                 } else {
@@ -458,7 +479,7 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                         public void mouseClicked(java.awt.event.MouseEvent e) {
                                 selectedContact = new Contact();
                                 selectedContact.setFirstName("Unsaved User");
-                                User u = User.find(userId);
+                                User u = chatController.findUserById(userId);
                                 selectedContact.setPhone(u.getPhone());
                                 displayMessages(-userId);
                                 jLabel23.setText("Chat with " + contact.getFirstName());
@@ -468,7 +489,6 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                 return row;
         }
 
-        
         private javax.swing.JPanel createContactRow(Contact contact, int index) {
                 javax.swing.JPanel row = new javax.swing.JPanel();
                 row.setLayout(null);
@@ -485,7 +505,7 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                 row.add(avatar);
                 javax.swing.JLabel statusDot = new javax.swing.JLabel("●");
                 statusDot.setBounds(58, 10, 10, 20);
-                User contactUser = User.findByPhone(contact.getPhone());
+                User contactUser = chatController.findUserByPhone(contact.getPhone());
                 if (contactUser != null && contactUser.isOnline()) {
                         statusDot.setForeground(new java.awt.Color(0, 255, 127)); // Green
                 } else {
@@ -536,7 +556,6 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                 return row;
         }
 
-        
         private void selectContact(int index) {
                 if (contacts != null && index < contacts.size()) {
                         selectedContact = contacts.get(index);
@@ -567,7 +586,7 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                         messageList = chatController.getConversationWithContact(contactIdOrNegativeUserId);
                         Contact c = Contact.find(contactIdOrNegativeUserId);
                         if (c != null) {
-                                User u = User.findByPhone(c.getPhone());
+                                User u = chatController.findUserByPhone(c.getPhone());
                                 if (u != null)
                                         partnerId = u.getId();
                         }
@@ -588,50 +607,51 @@ public class Chats extends javax.swing.JFrame implements IObserver {
                         vertical.setValue(vertical.getMaximum());
                 });
         }
-        
-    class RoundedPanel extends javax.swing.JPanel {
-    private int radius;
-    private java.awt.Color backgroundColor;
 
-    public RoundedPanel(int radius, java.awt.Color bgColor) {
-        this.radius = radius;
-        this.backgroundColor = bgColor;
-        setOpaque(false); // مهم جداً لجعل الزوايا شفافة
-    }
+        class RoundedPanel extends javax.swing.JPanel {
+                private int radius;
+                private java.awt.Color backgroundColor;
 
-    @Override
-    protected void paintComponent(java.awt.Graphics g) {
-        super.paintComponent(g);
-        java.awt.Graphics2D graphics = (java.awt.Graphics2D) g;
-        graphics.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.setColor(backgroundColor);
-        graphics.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, radius, radius);
-    }
-}
-        
-//-------------------------------------------------------------------------------------------------------------------------------------------//
-        
+                public RoundedPanel(int radius, java.awt.Color bgColor) {
+                        this.radius = radius;
+                        this.backgroundColor = bgColor;
+                        setOpaque(false); // مهم جداً لجعل الزوايا شفافة
+                }
+
+                @Override
+                protected void paintComponent(java.awt.Graphics g) {
+                        super.paintComponent(g);
+                        java.awt.Graphics2D graphics = (java.awt.Graphics2D) g;
+                        graphics.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
+                                        java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+                        graphics.setColor(backgroundColor);
+                        graphics.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
+                }
+        }
+
+        // -------------------------------------------------------------------------------------------------------------------------------------------//
+
         private javax.swing.JPanel createMessageBubble(Message message) {
                 boolean isMine = message.getSenderId() == SessionManager.getInstance().getCurrentUserId();
-                
+
                 // حدد اللون أولاً
-java.awt.Color bubbleColor = isMine ? new java.awt.Color(34, 52, 70) : new java.awt.Color(71, 86, 101);
-RoundedPanel bubble = new RoundedPanel(20, bubbleColor);
+                java.awt.Color bubbleColor = isMine ? new java.awt.Color(34, 52, 70) : new java.awt.Color(71, 86, 101);
+                RoundedPanel bubble = new RoundedPanel(20, bubbleColor);
 
                 javax.swing.JPanel bubbleContainer = new javax.swing.JPanel();
                 bubbleContainer.setLayout(new java.awt.BorderLayout());
                 bubbleContainer.setOpaque(false);
-bubbleContainer.setMaximumSize(new java.awt.Dimension(Short.MAX_VALUE, 500));
-bubbleContainer.add(bubble);
+                bubbleContainer.setMaximumSize(new java.awt.Dimension(Short.MAX_VALUE, 500));
+                bubbleContainer.add(bubble);
                 bubble.setLayout(new javax.swing.BoxLayout(bubble, javax.swing.BoxLayout.Y_AXIS));
                 bubble.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
                 if (isMine) {
-bubbleContainer.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+                        bubbleContainer.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
                 } else {
-bubbleContainer.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+                        bubbleContainer.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
                 }
-bubbleContainer.setMaximumSize(new java.awt.Dimension(Short.MAX_VALUE, 500));
+                bubbleContainer.setMaximumSize(new java.awt.Dimension(Short.MAX_VALUE, 500));
                 if ("IMAGE".equalsIgnoreCase(message.getMessageType())) {
                         String path = message.getMediaPath();
                         if (path != null && new java.io.File(path).exists()) {
@@ -738,7 +758,6 @@ bubbleContainer.setMaximumSize(new java.awt.Dimension(Short.MAX_VALUE, 500));
                 return bubbleContainer;
         }
 
-        
         private void initContactPanelListeners() {
                 java.awt.event.MouseAdapter clickHandler0 = new java.awt.event.MouseAdapter() {
                         @Override
@@ -778,7 +797,6 @@ bubbleContainer.setMaximumSize(new java.awt.Dimension(Short.MAX_VALUE, 500));
                 jPanel8.addMouseListener(clickHandler4);
         }
 
-        
         @SuppressWarnings("unchecked")
         private void initComponents() {
 
@@ -1501,7 +1519,7 @@ bubbleContainer.setMaximumSize(new java.awt.Dimension(Short.MAX_VALUE, 500));
                                                                 Short.MAX_VALUE));
 
                 pack();
-        }// </editor-fold>                        
+        }// </editor-fold>
 
         private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField1ActionPerformed
         }// GEN-LAST:event_jTextField1ActionPerformed
@@ -1561,9 +1579,8 @@ bubbleContainer.setMaximumSize(new java.awt.Dimension(Short.MAX_VALUE, 500));
                 new Contacts().setVisible(true);
         }// GEN-LAST:event_jButton6ActionPerformed
 
-        
         public static void main(String args[]) {
-                
+
                 try {
                         for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
                                         .getInstalledLookAndFeels()) {
@@ -1575,7 +1592,7 @@ bubbleContainer.setMaximumSize(new java.awt.Dimension(Short.MAX_VALUE, 500));
                 } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
                         logger.log(java.util.logging.Level.SEVERE, null, ex);
                 }
-                
+
                 java.awt.EventQueue.invokeLater(() -> new Chats().setVisible(true));
         }
 
@@ -1594,6 +1611,7 @@ bubbleContainer.setMaximumSize(new java.awt.Dimension(Short.MAX_VALUE, 500));
                 }
                 updateContactLabels();
         }
+
         private javax.swing.JButton jButton1;
         private javax.swing.JButton jButton2;
         private javax.swing.JButton jButton4;

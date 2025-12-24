@@ -7,7 +7,6 @@ public class AddContact extends javax.swing.JFrame {
         private String selectedImagePath = null;
         private com.mycompany.chatapp.model.Contact existingContact = null;
 
-        
         public AddContact() {
                 initComponents();
                 setResizable(false); // Disable maximize
@@ -26,7 +25,6 @@ public class AddContact extends javax.swing.JFrame {
                 initImageButton(); // Connect Add Image button
         }
 
-        
         public AddContact(com.mycompany.chatapp.model.Contact contact) {
                 this();
                 this.existingContact = contact;
@@ -42,7 +40,6 @@ public class AddContact extends javax.swing.JFrame {
                 }
         }
 
-        
         private void initImageButton() {
                 jButton1.addActionListener(e -> {
                         javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
@@ -59,7 +56,6 @@ public class AddContact extends javax.swing.JFrame {
                 });
         }
 
-        
         @SuppressWarnings("unchecked")
         private void initComponents() {
 
@@ -297,9 +293,11 @@ public class AddContact extends javax.swing.JFrame {
                                         javax.swing.JOptionPane.ERROR_MESSAGE);
                         return;
                 }
-                com.mycompany.chatapp.model.User existingUser = com.mycompany.chatapp.model.User.findByPhone(phone);
+                com.mycompany.chatapp.model.User existingUser = com.mycompany.chatapp.controller.ChatController
+                                .getInstance().findUserByPhone(phone);
                 if (existingUser == null) {
-                        existingUser = com.mycompany.chatapp.model.User.findByEmail(phone); // Using phone field for
+                        existingUser = com.mycompany.chatapp.controller.ChatController.getInstance()
+                                        .findUserByEmail(phone); // Using phone field for
                 }
 
                 if (existingUser == null) {
@@ -349,9 +347,8 @@ public class AddContact extends javax.swing.JFrame {
                 new Contacts().setVisible(true);
         }// GEN-LAST:event_jButton3ActionPerformed
 
-        
         public static void main(String args[]) {
-                
+
                 try {
                         for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
                                         .getInstalledLookAndFeels()) {
@@ -364,9 +361,9 @@ public class AddContact extends javax.swing.JFrame {
                         logger.log(java.util.logging.Level.SEVERE, null, ex);
                 }
 
-                
                 java.awt.EventQueue.invokeLater(() -> new AddContact().setVisible(true));
         }
+
         private javax.swing.JButton jButton1;
         private javax.swing.JButton jButton2;
         private javax.swing.JButton jButton3;

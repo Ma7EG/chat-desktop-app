@@ -38,14 +38,13 @@ public class ChatController implements IObserver {
         return instance;
     }
 
-    
     public boolean sendMessage(String receiverPhone, String content, String messageType) {
         int senderId = SessionManager.getInstance().getCurrentUserId();
         if (senderId == -1) {
             System.err.println("No user logged in");
             return false;
         }
-        User receiver = User.findByPhone(receiverPhone);
+        User receiver = userService.findByPhone(receiverPhone);
         if (receiver == null) {
             System.err.println("User with phone " + receiverPhone + " not found");
             return false;
@@ -61,14 +60,13 @@ public class ChatController implements IObserver {
         return true;
     }
 
-    
     public boolean sendMessageToContact(int contactId, String content, String messageType) {
         Contact contact = Contact.find(contactId);
         if (contact == null) {
             System.err.println("Contact not found");
             return false;
         }
-        User receiver = User.findByPhone(contact.getPhone());
+        User receiver = userService.findByPhone(contact.getPhone());
         if (receiver == null) {
             int senderId = SessionManager.getInstance().getCurrentUserId();
             Message message = MessageFactory.createMessage(messageType, senderId, contactId, content);
@@ -84,7 +82,6 @@ public class ChatController implements IObserver {
         return sendMessage(contact.getPhone(), content, messageType);
     }
 
-    
     public boolean deleteMessage(Message message) {
         ICommand deleteCommand = new DeleteMessageCommand(message);
         deleteCommand.execute();
@@ -92,7 +89,6 @@ public class ChatController implements IObserver {
         return true;
     }
 
-    
     public boolean undo() {
         if (!commandHistory.isEmpty()) {
             ICommand lastCommand = commandHistory.pop();
@@ -102,20 +98,18 @@ public class ChatController implements IObserver {
         return false;
     }
 
-    
     public List<Message> getConversationByPhone(String phone) {
         int currentUserId = SessionManager.getInstance().getCurrentUserId();
         if (currentUserId == -1)
             return new ArrayList<>();
 
-        User otherUser = User.findByPhone(phone);
+        User otherUser = userService.findByPhone(phone);
         if (otherUser == null)
             return new ArrayList<>();
 
         return Message.getConversation(currentUserId, otherUser.getId());
     }
 
-    
     public List<Message> getConversationWithContact(int contactId) {
         int currentUserId = SessionManager.getInstance().getCurrentUserId();
         if (currentUserId == -1)
@@ -124,14 +118,13 @@ public class ChatController implements IObserver {
         Contact contact = Contact.find(contactId);
         if (contact == null)
             return new ArrayList<>();
-        User otherUser = User.findByPhone(contact.getPhone());
+        User otherUser = userService.findByPhone(contact.getPhone());
         if (otherUser != null) {
             return Message.getConversation(currentUserId, otherUser.getId());
         }
         return Message.getConversation(currentUserId, contactId);
     }
 
-    
     public List<Contact> getCurrentUserContacts() {
         int userId = SessionManager.getInstance().getCurrentUserId();
         if (userId == -1)
@@ -139,12 +132,10 @@ public class ChatController implements IObserver {
         return Contact.findByUserId(userId);
     }
 
-    
     public void addObserver(IObserver observer) {
         messageNotifier.attach(observer);
     }
 
-    
     public void removeObserver(IObserver observer) {
         messageNotifier.detach(observer);
     }
@@ -154,7 +145,6 @@ public class ChatController implements IObserver {
         System.out.println("ChatController log: New message received " + message.getContent());
     }
 
-    
     public void setCurrentUserOnline() {
         User user = SessionManager.getInstance().getCurrentUser();
         if (user != null) {
@@ -162,7 +152,6 @@ public class ChatController implements IObserver {
         }
     }
 
-    
     public void setCurrentUserOffline() {
         User user = SessionManager.getInstance().getCurrentUser();
         if (user != null) {
@@ -170,12 +159,23 @@ public class ChatController implements IObserver {
         }
     }
 
-    
     public boolean isUserOnline(String phone) {
-        User user = User.findByPhone(phone);
+        User user = userService.findByPhone(phone);
         if (user != null) {
             return user.isOnline();
         }
         return false;
+    }
+
+    public User findUserById(int id) {
+        return userService.findById(id);
+    }
+
+    public User findUserByPhone(String phone) {
+        return userService.findByPhone(phone);
+    }
+
+    public User findUserByEmail(String email) {
+        return userService.findByEmail(email);
     }
 }
